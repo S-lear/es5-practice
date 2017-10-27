@@ -37,16 +37,25 @@
 //   };
 // }
 
-function foo() {
-  var bar;
-  return bar();
+// function foo() {
+//   var bar;
+//   return bar();
 
-  var bar = function () {
-    return 3;
-  };
+//   var bar = function () {
+//     return 3;
+//   };
 
-  var bar = function () {
-    return 8;
-  };
-}
-console.log(foo());
+//   var bar = function () {
+//     return 8;
+//   };
+// }
+// console.log(foo());
+
+var p1 = Promise.resolve(3);
+var p2 = 1337;
+var p3 = new Promise((resolve, reject) => {
+});
+
+Promise.all([p1, p2, p3]).then(values => {
+  console.log(values); // [3, 1337, "foo"]
+});
