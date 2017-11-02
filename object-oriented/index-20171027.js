@@ -51,11 +51,55 @@
 // }
 // console.log(foo());
 
-var p1 = Promise.resolve(3);
-var p2 = 1337;
-var p3 = new Promise((resolve, reject) => {
-});
+// var p1 = Promise.resolve(3);
+// var p2 = 1337;
+// var p3 = new Promise((resolve, reject) => {
+// });
 
-Promise.all([p1, p2, p3]).then(values => {
-  console.log(values); // [3, 1337, "foo"]
-});
+// Promise.all([p1, p2, p3]).then(values => {
+//   console.log(values); // [3, 1337, "foo"]
+// });
+
+var table = new Array(10)
+
+for(var i = 0; i < table.length; i++) {
+  table[i] = new Array(10)
+}
+for(var row = 0; row < table.length; row++) {
+  for(var col = 0; col < table[row].length; col++) {
+    table[row][col] = row * col
+  }
+}
+console.log(table[3][5])
+
+
+function foreach(a, f, t) {
+  try{
+    a.forEach(f, t);
+  } catch(e) {
+    if(e === foreach.break) return;
+    else throw e;
+  }
+}
+
+foreach.break = new Error(2);
+
+foreach([1,2,3,4],console.log)
+
+var geval = eval;
+var x = 'global';
+var y = 'global';
+function f(){
+  var x = 'local';
+  eval('x += "changed"');
+  return x;
+}
+
+function g() {
+  var y = 'local';
+  geval('y += "changed"');
+  return y;
+}
+
+console.log(f(), '....', x)
+console.log(g(), '....', y)
