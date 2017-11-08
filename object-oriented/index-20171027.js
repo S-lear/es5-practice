@@ -60,46 +60,90 @@
 //   console.log(values); // [3, 1337, "foo"]
 // });
 
-var table = new Array(10)
+// var table = new Array(10)
 
-for(var i = 0; i < table.length; i++) {
-  table[i] = new Array(10)
-}
-for(var row = 0; row < table.length; row++) {
-  for(var col = 0; col < table[row].length; col++) {
-    table[row][col] = row * col
+// for(var i = 0; i < table.length; i++) {
+//   table[i] = new Array(10)
+// }
+// for(var row = 0; row < table.length; row++) {
+//   for(var col = 0; col < table[row].length; col++) {
+//     table[row][col] = row * col
+//   }
+// }
+// console.log(table[3][5])
+
+
+// function foreach(a, f, t) {
+//   try{
+//     a.forEach(f, t);
+//   } catch(e) {
+//     if(e === foreach.break) return;
+//     else throw e;
+//   }
+// }
+
+// foreach.break = new Error(2);
+
+// foreach([1,2,3,4],console.log)
+
+// var geval = eval;
+// var x = 'global';
+// var y = 'global';
+// function f(){
+//   var x = 'local';
+//   eval('x += "changed"');
+//   return x;
+// }
+
+// function g() {
+//   var y = 'local';
+
+//   return y;
+// }
+
+// console.log(f(), '....', x)
+// console.log(g(), '....', y)
+
+// var pattern = /s$/
+// var pattern = new RegExp('s$');
+// const JavaScript = 'javascript'
+// const j = "JavaScript".search(/script/i)
+// console.log(j)
+// const J = JavaScript.replace(/javascript/gi, "JavaScript")
+// console.log(J)
+// var quote = /"([^"]*)"/g;
+// var text = '"abcd"';
+// console.log(text.replace(quote, "“$1”"))
+// console.log(text)
+
+// var url = /(\w+):\/\/([\w.]+)\/(\S*)/;
+// var text1 = "Visit my blog at http://www.example.com/~david"
+// var result = text1.match(url)
+// if(result != null) {
+//   var fullurl = result[0]
+//   var protocol = result[1]
+//   var host = result[2]
+//   var path = result[3]
+// }
+// console.log(result)
+
+function range(min, max) {
+  return {
+    get min() {return min},
+    get max() {return max},
+    includes: function(x) {return min < x && x <= max},
+    toString: function() {return "[" + min + "," + max + "]"},
+    _iterator_: function() {
+      let val = Math.ceil(min);
+      return {
+        next: function() {
+          if(val > max) throw StopIteration;
+          return val++
+        }
+      }
+    }
   }
 }
-console.log(table[3][5])
+for (let i in range(1, 10)) console.log(i);
 
 
-function foreach(a, f, t) {
-  try{
-    a.forEach(f, t);
-  } catch(e) {
-    if(e === foreach.break) return;
-    else throw e;
-  }
-}
-
-foreach.break = new Error(2);
-
-foreach([1,2,3,4],console.log)
-
-var geval = eval;
-var x = 'global';
-var y = 'global';
-function f(){
-  var x = 'local';
-  eval('x += "changed"');
-  return x;
-}
-
-function g() {
-  var y = 'local';
-  geval('y += "changed"');
-  return y;
-}
-
-console.log(f(), '....', x)
-console.log(g(), '....', y)
