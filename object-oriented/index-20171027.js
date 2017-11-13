@@ -127,23 +127,94 @@
 // }
 // console.log(result)
 
-function range(min, max) {
-  return {
-    get min() {return min},
-    get max() {return max},
-    includes: function(x) {return min < x && x <= max},
-    toString: function() {return "[" + min + "," + max + "]"},
-    _iterator_: function() {
-      let val = Math.ceil(min);
-      return {
-        next: function() {
-          if(val > max) throw StopIteration;
-          return val++
-        }
-      }
-    }
-  }
+// function range(min, max) {
+//   return {
+//     get min() {return min},
+//     get max() {return max},
+//     includes: function(x) {return min < x && x <= max},
+//     toString: function() {return "[" + min + "," + max + "]"},
+//     _iterator_: function() {
+//       let val = Math.ceil(min);
+//       return {
+//         next: function() {
+//           if(val > max) throw StopIteration;
+//           return val++
+//         }
+//       }
+//     }
+//   }
+// }
+// for (let i in range(1, 10)) console.log(i);
+
+// function range(min, max) {
+//   for (let i = Math.ceil(min); i <= max; i++) yield i;
+// }
+
+// console.log(range(1,2))
+// for (let n in range(3, 8)) console.log(n);
+// function eachline(s) {
+//   let p;
+//   while((p = s.indexOf('\n')) != -1) {
+//     yield s.substring(0, p);
+//     s = s.substring(p+1)
+//   }
+//   if(s.length > 0) yield s;
+// }
+
+// function map(i, f) {
+//   for(let x in i) yield f(x);
+// }
+
+// function select(i, f) {
+//   for(let x in i) {
+//     if(f(x)) yield x;
+//   }
+// }
+
+// let text = " #comment \n \n hello \nworld\n quit \n unreached \n";
+
+// let lines = eachline(text)
+
+// let trimmed = map(lines, function(line) {return line.trim();});
+
+// let nonblank = select(trimmed, function(line) {
+//   return line.length > 0 && line[0] != "#";
+// })
+
+// for(let line in nonblank) {
+//   if(line === 'quit') break;
+//   console.log(line);
+// }
+
+
+
+// function counter(initial) {
+//   let nextValue = initial;
+//   while(true) {
+//     try{
+//       let increment = yield nextValue;
+//       if(increment) {
+//         nextValue += increment
+//       } else {
+//         nextValue++
+//       }
+//     } catch(e) {
+//       if(e === 'teset') {
+//         nextValue = initial
+//       } else {
+//         throw e;
+//       }
+//     }
+//   }
+// }
+
+// let c = counter(10);
+// console.log(c.next())
+// console.log(c.send(2))
+// console.log(c.throw('reset'))
+
+try {
+  throw 1
+} catch(e) {
+  console.log(e)
 }
-for (let i in range(1, 10)) console.log(i);
-
-
