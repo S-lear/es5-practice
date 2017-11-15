@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>客户端存储</title>
+</head>
+<body>
+  <h1>发布脚本</h1>
+  <script>
+    var name = localStorage.username;
+    name = localStorage['username'];
+    if(!name) {
+      name = prompt('What is your name?')
+      localStorage.username = name;
+    }
+    for(var name in localStorage) {
+      var value = localStorage[name];
+    }
+
+    localStorage.lastRead = (new Date().toUTCString());
+    var lastRead = new Date(Date.parse(localStorage.lastRead));
+
+    localStorage.setItem('x', 1)
+    localStorage.getItem('x')
+
+    for(var i = 0; i < localStorage.length; i++) {
+      var name = localStorage.key(i)
+      var value = localStorage.getItem(name);
+    }
+    localStorage.removeItem('x')
+    localStorage.clear();
+
+    var name = 'zhengsongbo'
+    document.cookie = "name=" + encodeURIComponent(name)
+
+    function setcookie(name, value, daysTolive) {
+      var cookie = name + '=' + encodeURIComponent(value);
+      if(typeof daysTolive === 'number') {
+        cookie += "; max-age=" + (daysTolive*60*60*24);
+      }
+      document.cookie = cookie;
+    }
+
+    function getcookie() {
+      var cookie = {}
+      var all = document.cookie
+      if(all === "") return cookie;
+      var list = all.split("; ")
+      for(var i = 0; i < list.length; i++) {
+        var cookie = list[i];
+        var p = cookie.indexOf("=");
+        var name = cookie.substring(0, p)
+        var value = cookie.substring(p+1)
+        value = decodeURIComponent(value)
+        cookie[name] = value
+      }
+      return cookie;
+    }
+
+    setcookie('age', 24, 60)
+    // console.log(getcookie())
+
+    function CookieStorage(maxage, path) {
+      console.log(this)
+      var cookie = (function(){
+        var cookie = {};
+        var all = document.cookie;
+        if(all === '') return cookie;
+        var list = all.split('; ')
+        for(var i = 0; i < list.length; i++){
+          var cookie = list[i]
+          var p = cookie.indexOf('=');
+          var name = cookie.substring(0, p)
+          var value = cookie.substring(p+1)
+          value = decodeURIComponent(value)
+          cookie[name] = value;
+        }
+        return cookie;
+      }())
+      var keys = []
+      for(var key in cookie) keys.push(key);
+      this.length = keys.length
+      this.key = function(n) {
+        if(n < 0 || n >= keys.length) return null;
+        return keys[n]
+      }
+      this.getItem = function(name) {
+        return cookie[name] || null
+      }
+      this.setItem = function(key, value) {
+        if(!(key in cookie)) {
+          keys.push(key);
+          this.length++
+        }
+        cookie[key] = value
+        var cookie = key + '=' + encodeURIComponent(value);
+        if(path) cookie += '; max-age=' + maxage;
+        document.cookie = cookie
+      }
+      this.removeItem = function(key) {
+        if(!(key in cookie)) return;
+        delete cookie[key];
+        for(var i = 0; i < key.length; i++) {
+          if(key[i] === key) {
+            keys.splice(i, 1);
+            break
+          }
+        }
+        this.length--;
+        document.cookie = key + '=; max-age=0'
+      }
+
+      this.clear = function() {
+        for(var i = 0; i < keys.length; i++) {
+          document.cookie = keys[i] + '=; max-age=0'
+        }
+        cookie = {}
+        keys = []
+        this.length = 0
+      }
+    }
+    var cookieStorage = new CookieStorage()
+    console.log(cookieStorage.clear)
+  </script>
+</body>
+</html>
