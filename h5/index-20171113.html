@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" manifest="myapp.cache">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,9 @@
   <title>客户端存储</title>
 </head>
 <body>
+    <script src="./cache.js"></script>
   <h1>发布脚本</h1>
+  <h2 id="statusline"></h2>
   <script>
     var name = localStorage.username;
     name = localStorage['username'];
@@ -63,7 +65,7 @@
     // console.log(getcookie())
 
     function CookieStorage(maxage, path) {
-      console.log(this)
+      // console.log(this)
       var cookie = (function(){
         var cookie = {};
         var all = document.cookie;
@@ -122,7 +124,58 @@
       }
     }
     var cookieStorage = new CookieStorage()
-    console.log(cookieStorage.clear)
+    // console.log(cookieStorage.clear)
+
+    applicationCache.onupdateready = function() {
+      var reload = confirm('A new version of this application is available\n and will be used the next time you reload.\n Do you  want to reload now?')
+      if(reload) location.reload();
+    }
+    function status(msg) {
+      document.getElementById('statusline').innerHTML = msg;
+      console.log(msg)
+    }
+    window.applicationCache.onchecking = function() {
+      status('Checking for a new version.');
+      return false;
+    }
+    window.applicationCache.onnoupdate = function() {
+      status('This version is up-to-date');
+      return false;
+    }
+    window.applicationCache.ondownloading = function() {
+      status('Downloading new version');
+      window.progresscount = 0;
+      return false;
+    }
+    window.applicationCache.onprogress = function(e) {
+      var progress = '';
+      if(e && e.lengthComputable) {
+        progress = ' ' + Math.round(100 * e.loaded / e.total) + '%';
+      }else {
+        progress = ' (' + ++progresscount + ')'
+      }
+      status('Downloading new version' + progress);
+      return false;
+    }
+    window.applicationCache.oncached = function() {
+      status('This application is now cached locally');
+      return false;
+    }
+    window.applicationCache.onupdateready = function() {
+      status("A new version has been downloaded.Reload to run it");
+      return false;
+    }
+    window.applicationCache.onerror = function() {
+      status("Couldn't load manifest or cache application");
+      return false;
+    }
+    window.applicationCache.onobsolete = function(){
+      status("This applicaton is no longer cached. Reload to get the latest version from the network.");
+      return false;
+    }
+    console.log(applicationCache.status)
+    ApplicationCache.UNCACHED(1)
+    ApplicationCache.CHECKING(2)
   </script>
 </body>
 </html>
